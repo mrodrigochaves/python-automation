@@ -1,0 +1,1 @@
+## Repositório com exemplos de automatização em Python
