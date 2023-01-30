@@ -1,27 +1,19 @@
-import plotly.graph_objects as go
-import dash
-from dash import dcc
-from dash import html
+import matplotlib.pyplot as plt
 import pandas as pd
 
-# Carregar dados de custos da AWS a partir de um arquivo CSV
-df = pd.read_csv("costs.csv", sep=";")
+# Carregue o arquivo .csv usando pandas
+data = pd.read_csv("costs.csv")
 
-# Criar uma função para retornar o gráfico de barras de custos por serviço
-def create_bar_chart(df):
-    services = df['Service'].value_counts().index
-    costs = df['Cost'].groupby(df['Service']).sum().values
-    data = [go.Bar(x=services, y=costs, name='Costs')]
-    layout = go.Layout(title='Costs by Service', xaxis={'title':'Service'}, yaxis={'title':'Costs'})
-    return go.Figure(data=data, layout=layout)
+# Selecione a coluna Total costs($) e as datas como x
+x = data['Service']
+y = data['Total costs($)']
 
-# Criar a aplicação Dash
-app = dash.Dash()
-app.layout = html.Div(children=[
-    html.H1(children='AWS Cost Dashboard'),
-    dcc.Graph(id='bar-chart', figure=create_bar_chart(df)),
-])
+# Plot o gráfico de barras
+plt.bar(x, y)
 
-# Executar a aplicação
-if __name__ == '__main__':
-    app.run_server(debug=True)
+# Adicione rótulos aos eixos x e y
+plt.xlabel('Service')
+plt.ylabel('Total costs($)')
+
+# Exiba o gráfico
+plt.show()
